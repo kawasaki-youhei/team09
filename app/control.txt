@@ -13,7 +13,7 @@ boolean moveLeft = false, moveRight = false;
 /*
 float player2X, player2Y;
 float player2Speed = 4;
-＊/
+*/
 
 void stup(){
 size(800,600);
