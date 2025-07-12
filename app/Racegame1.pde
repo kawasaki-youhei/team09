@@ -90,4 +90,3 @@ class ScoreManager {
     return score;
   }
 }
-

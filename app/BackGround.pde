@@ -1,5 +1,5 @@
 class Ground{
-  int btmRoadL;
+  int btmRoadL;           
   int btmRoadR;
   int uppRoadR;
   int uppRoadL;
@@ -13,11 +13,11 @@ class Ground{
 }
 
 
-class BackGround extends Ground{
-  color roadC;
-  color BGC;
+class BackBase extends Ground{
+  color roadC; //道の色
+  color BGC;   //背景（道サイド）の色
   
-  BackGround(int rR, int rG, int rB, int BGR, int BGG, int BGB){
+  BackBase(int rR, int rG, int rB, int BGR, int BGG, int BGB){
     super();
    roadC = color(rR, rG, rB);
    BGC = color(BGR, BGG, BGB);
@@ -30,17 +30,19 @@ class BackGround extends Ground{
  
 }
 
-class RoadStyle extends Ground{
+class RoadMarker extends Ground{
   color Marker;
+  color side;
   int x = 0;
   int y = 0;
+  int sideY = 0;
   
- RoadStyle(int R,int G,int B){
+  RoadMarker(int mR,int mG,int mB){
    super();
-   Marker = color(R,G,B);
- }
+   Marker = color(mR,mG,mB);
+  }
  
- void drawCenter(int wid, int len){
+  void drawCenter(int wid, int len){
    int dx = 4;
    int dy = 10;
    int gap = 40;
@@ -52,16 +54,77 @@ class RoadStyle extends Ground{
    for(int i = 0; i < box; i++){
      int yi = y - i * gap;
      
-   quad(width/2 - wid + x,yi,
-        width/2 + wid + x,yi, 
-        width/2 + wid + x + dx,yi + len,
-        width/2 - wid - x - dx, yi + len);
-        y+= dy;
+     quad(width/2 - wid + x,yi,
+          width/2 + wid + x,yi, 
+          width/2 + wid + x + dx,yi + len,
+          width/2 - wid - x - dx, yi + len);
+     }
+     y += dy;
+     if (y > height + gap){
+       y = -len;
+     }
    }
-   if (y > height + gap){
-     y = -len;
-   }
- }
+}
+
+class RoadSide extends Ground{
+  float y;
+  float w = 30;
+  float h = 50;
+  color side;
+  ArrayList<Float> sideYs = new ArrayList<Float>(); 
+  int spawnInterval = 15; 
+  int speed = 10;
+
+
+  RoadSide(float yStart, int sR, int sG, int sB){
+    y = yStart;
+    side = color(sR,sG,sB);    
+  }
+  
+  void base(){
+     fill(side);
+     noStroke();
+     quad(btmRoadL, 600, btmRoadL - w, 600, uppRoadL - w, 0, uppRoadL,0);
+     quad(btmRoadR, 600, btmRoadR + w, 600, uppRoadR + w, 0, uppRoadR,0);
+  }
+
+  void display() {
+    if (frameCount % spawnInterval == 0) {  //白い平行四辺形を定期的にサイドの上に流し続けることでラインの縞々を表現
+     sideYs.add(-h); 
+    }
+
+    fill(255);
+    noStroke();
+
+    for (int i = sideYs.size() - 1; i >= 0; i--) {
+      float y = sideYs.get(i);
+
+      // 左ライン
+      quad(
+        uppRoadL - w - ((uppRoadL - btmRoadL) * y / height), y,
+        uppRoadL - ((uppRoadL - btmRoadL) * y / height), y,
+        uppRoadL - ((uppRoadL - btmRoadL) * (y + h) / height), y + h,
+        uppRoadL - w - ((uppRoadL - btmRoadL) * (y + h) / height), y + h
+      );
+
+      // 右ライン
+      quad(
+        uppRoadR + ((btmRoadR - uppRoadR) * y / height), y,
+        uppRoadR + w + ((btmRoadR - uppRoadR) * y / height), y,
+        uppRoadR + w + ((btmRoadR - uppRoadR) * (y + h) / height), y + h,
+        uppRoadR + ((btmRoadR - uppRoadR) * (y + h) / height), y + h
+      );
+
+      // 移動
+      y += speed;
+      sideYs.set(i, y);
+
+      // 画面外に出たら削除
+      if (y > height + h) {
+        sideYs.remove(i);
+      }
+    }
+  }
 }
   
   
