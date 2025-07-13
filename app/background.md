@@ -1,24 +1,40 @@
-##景色(ground)
-   ###変数
-   -int "load_left"(道と道の左側の境界線)
-   -int "load_right"(道と道の右側の境界線)
-   -int "sky_line"(水平線のy座標を保存。)
-   
-   ###派生オブジェクト
-     -背景(background)
-       道の基本スタイル、背景色を描画する
-　　　  いろんな背景でプレイできるように、背景ごとにこの派生クラスで定義する
+- Ground
+　道路描写に使う座標情報のみを保持　親クラス
+  (変数)
+  * int btmRoadL 画面に映っている道路の左下 
+  * int btmRoadR                     右下 
+  * int uppRoadR                     右上
+  * int uppRoadL                     左上
+  今回は変更する予定がないため、クラス中で定義
 
-       ####変数
-       -color "sky_color"　　　　　　　　　　　　 空の色
-       -color "load_color"                         道の色
-       -color "load_lcolor"                        道の左側の色
-       -color "load_rcolor"                        道の右側の色
-       -int    obj_max                             配置オブジェクトの上限
-       -class"bg○○(オブジェクト名)"             配置するオブジェクト
-                                                   (オブジェクトごとに用意)
+    - BackBase ex.Ground
+      背景の基本配色機能を保持
+      (変数)
+      * color roadC 道の色
+      * color BGC   道以外の色
+      ２値（=int６値）はコンストラクタで取得
+      (関数)
+      * void display BGC色で全体塗ってから、道の色を塗る
 
-        ####関数
-       -makeload　　　　　　　　　　　　　　　　　それぞれの位置に色を配置
-       -setload            　　　　　　　　　　　  道に柄をつける
-       -setobject                                  道の左右にオブジェクトを配置
+
+    - RoadMarker ex.Ground
+     背景の装飾のうち、中央線の点線を描く
+     (変数)
+     * color Marker 中央線の色 コンストラクタで取得
+     それ以外は関数管理用の仮変数
+     (関数)
+     *void drawCenter(int wid int len)
+     中央線を引く
+
+     -RoadSide ex.Ground
+     背景の装飾のうち,道路サイドを描く
+     （変数）
+     float w ,h　サイド、サイド上を動く四角の幅、しかくの高さ
+     color side  サイドの色。コンストラクタで取得
+     それ以外はサイド上を流れる白い平行四辺形の情報。
+
+     (関数)
+     void base   サイドの色を配置
+     void display サイドの上に白い平行四辺形を一定時間間隔で流すことで点線を再現
+     
+

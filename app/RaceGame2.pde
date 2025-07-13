@@ -10,21 +10,31 @@ ArrayList<Coin> coins = new ArrayList<Coin>();
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ScoreManager scoreManager = new ScoreManager();
 
-int roadLeft = 100;
-int roadRight = 700;  // width - 100（幅800前提）
+BackBase BB1;
+RoadMarker RM1; 
+RoadSide RS1;
 
 void setup() {
   size(800, 600);
   player1Img = loadImage("player1.png");
   player1x = width / 2 - 20;
   player1y = height - 100;
+  
+  BB1 = new BackBase(224, 224, 224, 128, 192, 0);
+  RM1 = new RoadMarker(255, 255, 255);
+  RS1 = new RoadSide(122,122,122);
+
+  BB1.display();
+  RM1.drawCenter(10, 100);
+  RS1.base();
 }
 
 void draw() {
   if (!gameOver) {
-    background(180, 220, 255);  // 空の色
-    fill(80);
-    rect(roadLeft, 0, roadRight - roadLeft, height);  // 道路
+     BB1.display();
+     RM1.drawCenter(10, 100);
+     RS1.base();
+     RS1.display();
 
     // プレイヤー操作
     if (moveLeft) player1x -= playerSpeed;
@@ -34,11 +44,11 @@ void draw() {
 
     // ランダム生成
     if (random(1) < 1.0 / 60.0) {
-      float ox = random(roadLeft, roadRight - 40);
+      float ox = random(BB1.uppRoadL, BB1.uppRoadR - 40);
       obstacles.add(new Obstacle(ox, -80));
     }
     if (random(1) < 1.0 / 120.0) {
-      float cx = random(roadLeft, roadRight - 30);
+      float cx = random(BB1.uppRoadL, BB1.uppRoadR - 30);
       coins.add(new Coin(cx, -30));
     }
 

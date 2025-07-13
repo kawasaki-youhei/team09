@@ -32,7 +32,6 @@ class BackBase extends Ground{
 
 class RoadMarker extends Ground{
   color Marker;
-  color side;
   int x = 0;
   int y = 0;
   int sideY = 0;
@@ -67,7 +66,7 @@ class RoadMarker extends Ground{
 }
 
 class RoadSide extends Ground{
-  float y;
+  float y = 0; 
   float w = 30;
   float h = 50;
   color side;
@@ -76,8 +75,7 @@ class RoadSide extends Ground{
   int speed = 10;
 
 
-  RoadSide(float yStart, int sR, int sG, int sB){
-    y = yStart;
+  RoadSide(int sR, int sG, int sB){
     side = color(sR,sG,sB);    
   }
   
