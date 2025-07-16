@@ -36,6 +36,7 @@ ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 BackBase BB1;
 RoadMarker RM1; 
 RoadSide RS1;
+ScoreManager scoreManager = new ScoreManager();
 
 Player player; // プレイヤーオブジェクト
 
@@ -50,11 +51,11 @@ void setup() {
   titleFont = createFont("Arial", 60);
   //
 
-  playerImg = loadImage("images/player1.png");
-  coneImg = loadImage("images/cone.png");
-  hurdleImg = loadImage("images/hurdle.png");
-  puddleImg = loadImage("images/puddle.png");
-  enemyCarImg = loadImage("images/enemyCar.png");
+  playerImg = loadImage("./images/player1.png");
+  coneImg = loadImage("./images/cone.png");
+  hurdleImg = loadImage("./images/hurdle.png");
+  puddleImg = loadImage("./images/puddle.png");
+  enemyCarImg = loadImage("./images/enemyCar.png");
 
   player = new Player(playerImg, width / 2 - 20, height - 100);
 
@@ -149,6 +150,8 @@ void drawGame() {
   RM1.drawCenter(10, 100);
   RS1.base();
   RS1.display();
+    scoreManager.update();
+    scoreManager.draw();
 
   player.update(moveLeft, moveRight);
   player.draw();
@@ -198,6 +201,7 @@ void drawGameOverScreen() {
   textSize(50);
   textAlign(CENTER, CENTER);
   text("GAME OVER", width / 2, 150);
+  text("score:" + scoreManager.score, width/2, 200);
 
 // リスタートボタン
   fill(100, 0, 0);
