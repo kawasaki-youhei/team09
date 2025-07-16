@@ -50,11 +50,11 @@ void setup() {
   titleFont = createFont("Arial", 60);
   //
 
-  playerImg = loadImage("./images/player1.png");
-  coneImg = loadImage("./images/cone.png");
-  hurdleImg = loadImage("./images/hurdle.png");
-  puddleImg = loadImage("./images/puddle.png");
-  enemyCarImg = loadImage("./images/enemyCar.png");
+  playerImg = loadImage("images/player1.png");
+  coneImg = loadImage("images/cone.png");
+  hurdleImg = loadImage("images/hurdle.png");
+  puddleImg = loadImage("images/puddle.png");
+  enemyCarImg = loadImage("images/enemyCar.png");
 
   player = new Player(playerImg, width / 2 - 20, height - 100);
 
