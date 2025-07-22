@@ -1,5 +1,6 @@
 class ScoreManager {
   int score = 0;
+  int coinCount = 0;
   int coinPoint = 100;
   int timePoint = 1;
   int lastTime = 0;
@@ -13,6 +14,7 @@ class ScoreManager {
 
   void addCoin() {
     score += coinPoint;
+    coinCount++;
   }
 
   void draw() {
@@ -20,9 +22,20 @@ class ScoreManager {
     textSize(20);
     textAlign(LEFT, TOP);
     text("Score: " + score, 20, 20);
+    text("Coins: " + coinCount, 20, 50);
   }
 
   int getScore() {
     return score;
+  }
+  
+   void reset() {
+    score = 0;
+    coinCount = 0;
+    lastTime = millis();
+  }
+  
+  int getCoinCount() {
+    return coinCount;
   }
 }

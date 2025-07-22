@@ -45,7 +45,7 @@ Player player; // プレイヤーオブジェクト
 Countdown countdown;
 
 // 画像読み込み用変数
-PImage coneImg, hurdleImg, puddleImg, enemyCarImg;
+PImage coneImg, hurdleImg, puddleImg, enemyCarImg, coinImg;
 
 void setup() {
   size(800, 600);
@@ -58,6 +58,7 @@ void setup() {
   hurdleImg = loadImage("./images/hurdle.png");
   puddleImg = loadImage("./images/puddle.png");
   enemyCarImg = loadImage("./images/enemyCar.png");
+  coinImg = loadImage("./images/coin.png");
 
   player = new Player(playerImg, width / 2 - 20, height - 100);
 
@@ -157,6 +158,12 @@ void drawGame() {
 
   player.update(moveLeft, moveRight, moveUp, moveDown);
   player.draw();
+  
+  if (random(1) < 1.0 / 300.0) {
+  float ox = random(BB1.uppRoadL, BB1.uppRoadR - 40);
+  obstacles.add(new Coin(ox, -80, coinImg));
+ }
+
 
   if (random(1) < 1.0 / 180.0) {
     float ox = random(BB1.uppRoadL, BB1.uppRoadR - 40);
@@ -183,7 +190,13 @@ for (int i = obstacles.size() - 1; i >= 0; i--) {
   ob.display();
 
   if (ob.checkCollision(player.getX(), player.getY(), player.getW(), player.getH())) {
-    gameState = STATE_GAME_OVER;
+    if (ob instanceof Coin) {
+      scoreManager.addCoin();
+      obstacles.remove(i);
+      continue;
+    } else {
+      gameState = STATE_GAME_OVER;
+    }
   }
 
   if (ob.isOffScreen()) {
@@ -204,6 +217,7 @@ void drawGameOverScreen() {
   textAlign(CENTER, CENTER);
   text("GAME OVER", width / 2, 150);
   text("score:" + scoreManager.score, width/2, 200);
+  text("coins:" + scoreManager.getCoinCount(), width/2, 240);
 
 // リスタートボタン
   fill(100, 0, 0);
@@ -224,6 +238,8 @@ void startGame() {
   gameOver = false;
   obstacles.clear();
   player.setPosition(width / 2 - 20, height - 100);
+  
+  scoreManager.reset();
 
   countdown = new Countdown(4000); // 4秒カウント
   gameState = STATE_COUNTDOWN;
