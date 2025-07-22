@@ -1,6 +1,8 @@
 PImage playerImg;
 boolean gameOver = false;
 boolean moveLeft = false, moveRight = false;
+boolean moveUp = false, moveDown = false;
+
 
 //各画面
 final int STATE_TITLE = 0;
@@ -153,7 +155,7 @@ void drawGame() {
     scoreManager.update();
     scoreManager.draw();
 
-  player.update(moveLeft, moveRight);
+  player.update(moveLeft, moveRight, moveUp, moveDown);
   player.draw();
 
   if (random(1) < 1.0 / 180.0) {
@@ -230,11 +232,15 @@ void startGame() {
 void keyPressed() {
   if (keyCode == LEFT) moveLeft = true;
   if (keyCode == RIGHT) moveRight = true;
+  if (keyCode == UP) moveUp = true;
+  if (keyCode == DOWN) moveDown = true;
 }
 
 void keyReleased() {
   if (keyCode == LEFT) moveLeft = false;
   if (keyCode == RIGHT) moveRight = false;
+  if (keyCode == UP) moveUp = false;
+  if (keyCode == DOWN) moveDown = false;
 }
 
 void mousePressed() {

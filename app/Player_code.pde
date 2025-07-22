@@ -11,10 +11,20 @@ class Player {
     this.y = startY;
   }
 
-  void update(boolean moveLeft, boolean moveRight) {
+   // 左右＋上下の移動に対応
+  void update(boolean moveLeft, boolean moveRight, boolean moveUp, boolean moveDown) {
     if (moveLeft) x -= speed;
     if (moveRight) x += speed;
-    x = constrain(x, 100, width - w - 100); // 道路内で制限
+    if (moveUp) y -= speed;
+    if (moveDown) y += speed;
+
+    // 左右の移動制限（道路の中）
+    x = constrain(x, 100, width - w - 100);  // 必要に応じて100の値を調整
+
+    // 上下の移動制限（画面の下半分）
+    float topLimit = height / 2;
+    float bottomLimit = height - h;
+    y = constrain(y, topLimit, bottomLimit);
   }
 
   void draw() {
