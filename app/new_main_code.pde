@@ -9,6 +9,7 @@ final int STATE_TITLE = 0;
 final int STATE_PLAYING = 1;
 final int STATE_GAME_OVER = 2;
 final int STATE_COUNTDOWN = 3;
+final int STATE_GAME_CLEAR = 4;
 
 //最初はタイトル
 int gameState = STATE_TITLE;
@@ -83,6 +84,8 @@ void draw() {
     drawGame();
   } else if (gameState == STATE_GAME_OVER) {
     drawGameOverScreen();
+  } else if (gameState == STATE_GAME_CLEAR) {
+    drawGameClearScreen();
   }
 }
 
@@ -206,6 +209,12 @@ for (int i = obstacles.size() - 1; i >= 0; i--) {
       obstacles.remove(i); // 正常に避けたら削除
     }
   }
+  
+  if (scoreManager.getCoinCount() >= 10) {
+  gameState = STATE_GAME_CLEAR;
+  return;
+ }
+
 }
 
 }
@@ -228,6 +237,31 @@ void drawGameOverScreen() {
 
   // タイトルへボタン
   fill(0, 0, 100);
+  rect(titleButtonX, titleButtonY, titleButtonW, titleButtonH, 10);
+  fill(255);
+  textSize(24);
+  text("Back to Title", titleButtonX + titleButtonW / 2, titleButtonY + titleButtonH / 2);
+}
+
+void drawGameClearScreen() {
+  background(200, 255, 200);
+
+  fill(0, 150, 255);
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text("GAME CLEAR!", width / 2, 150);
+  text("score: " + scoreManager.score, width / 2, 200);
+  text("coins: " + scoreManager.getCoinCount(), width / 2, 240);
+
+  // リスタートボタン
+  fill(0, 100, 0);
+  rect(restartButtonX, restartButtonY, restartButtonW, restartButtonH, 10);
+  fill(255);
+  textSize(24);
+  text("Restart", restartButtonX + restartButtonW / 2, restartButtonY + restartButtonH / 2);
+
+  // タイトルへボタン
+  fill(0, 0, 150);
   rect(titleButtonX, titleButtonY, titleButtonW, titleButtonH, 10);
   fill(255);
   textSize(24);
@@ -277,6 +311,16 @@ void mousePressed() {
     if (mouseX >= titleButtonX && mouseX <= titleButtonX + titleButtonW &&
         mouseY >= titleButtonY && mouseY <= titleButtonY + titleButtonH) {
       gameState = STATE_TITLE;
+    }
+  } else if (gameState == STATE_GAME_CLEAR) {
+  if (mouseX >= restartButtonX && mouseX <= restartButtonX + restartButtonW &&
+      mouseY >= restartButtonY && mouseY <= restartButtonY + restartButtonH) {
+    startGame();  // カウントダウンから再スタート
+  }
+
+  if (mouseX >= titleButtonX && mouseX <= titleButtonX + titleButtonW &&
+      mouseY >= titleButtonY && mouseY <= titleButtonY + titleButtonH) {
+    gameState = STATE_TITLE;
     }
   }
 }

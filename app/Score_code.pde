@@ -22,7 +22,7 @@ class ScoreManager {
     textSize(20);
     textAlign(LEFT, TOP);
     text("Score: " + score, 20, 20);
-    text("Coins: " + coinCount, 20, 50);
+    text("Coins: " + coinCount + " / 10", 20, 50);
   }
 
   int getScore() {
