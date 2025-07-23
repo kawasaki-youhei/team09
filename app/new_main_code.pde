@@ -1,3 +1,4 @@
+/*
 PImage playerImg;
 boolean gameOver = false;
 boolean moveLeft = false, moveRight = false;
@@ -324,3 +325,4 @@ void mousePressed() {
     }
   }
 }
+*/
